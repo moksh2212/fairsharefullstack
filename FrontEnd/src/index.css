@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+:root {
+    --toastify-color-progress-dark: rgb(255, 134, 8);
+  }
+  
