@@ -8,7 +8,7 @@ import Message from "./models/messages.js";
 
 app.use(
   cors({
-    origin: "http://localhost:5173", 
+    origin: 'http://localhost:5173', 
     methods: ["GET", "PUT", "POST", "DELETE"],
     credentials: true,
   })

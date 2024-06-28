@@ -22,7 +22,7 @@ const Statistics = ({ over }) => {
     const fetchGroupExpense = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8000/expenses/MonthlyExpenses/${currentgroup.GroupId}`,
+          `http://localhost:6000/expenses/MonthlyExpenses/${currentgroup.GroupId}`,
           {
             method: "GET",
           }

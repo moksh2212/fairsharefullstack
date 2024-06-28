@@ -15,7 +15,7 @@ export const Combined = () => {
   const dispatch = useDispatch();
   const socket = useMemo(
     () =>
-      io("http://localhost:8000", {
+      io("localhost:8000", {
         withCredentials: true,
       }),
     []
