@@ -12,13 +12,16 @@ import { useState } from "react";
 import { useUser } from "@clerk/clerk-react";
 import { GoFileMedia } from "react-icons/go";
 import { GiCrossMark } from "react-icons/gi";
+import { baseurl } from "../../util";
+import ReactLoading from "react-loading";
+
 export const ExpenseTable = ({ setShowExpenseCard }) => {
   const dispatch = useDispatch();
   const user = useUser().user;
   const [deleteModal, setdeleteModal] = useState(false);
   const [expenseid, setexpenseid] = useState();
   const [filter, setfilter] = useState("");
-
+const [loading, setloading] = useState(false)
   const currentgroup = useSelector((state) => state.CurrentGroupReducer.ob);
 
   const expense = useSelector((state) => state.ExpenseReducer.Expenses) || [];
@@ -29,9 +32,10 @@ export const ExpenseTable = ({ setShowExpenseCard }) => {
   useEffect(() => {
     const fetchexpenses = async () => {
       try {
+        setloading(true)
         console.log(currentgroup.GroupId);
         const repsonse = await fetch(
-          `http://localhost:8000/expenses/getexpense/${currentgroup.GroupId}`,
+          `${baseurl}/expenses/getexpense/${currentgroup.GroupId}`,
           {
             method: "GET",
             headers: {
@@ -43,6 +47,7 @@ export const ExpenseTable = ({ setShowExpenseCard }) => {
           const fetchedExpenses = await repsonse.json();
           console.log(fetchedExpenses);
           dispatch(InitializeExpense(fetchedExpenses));
+          setloading(false)
         }
       } catch (error) {
         console.log(error);
@@ -57,7 +62,7 @@ export const ExpenseTable = ({ setShowExpenseCard }) => {
     try {
       const id = expenseid;
       const repsonse = await fetch(
-        `http://localhost:8000/expenses/Deleteexpense/${id}/${user.username}`,
+        `${baseurl}/expenses/Deleteexpense/${id}/${user.username}`,
         {
           method: "DELETE",
         }
@@ -207,7 +212,9 @@ export const ExpenseTable = ({ setShowExpenseCard }) => {
               </div>
               <div className="max-h-[490px] overflow-y-auto">
                 <div className="flex flex-col space-y-4 p-4">
-                  <div className="relative">
+                  {loading?<div className="flex justify-center items-center h-screen">
+    <ReactLoading type="cylon" color="#fff" />
+  </div>:<div className="relative">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                       <svg
                         aria-hidden="true"
@@ -239,7 +246,7 @@ export const ExpenseTable = ({ setShowExpenseCard }) => {
                     >
                       <GiCrossMark className="w-5 h-5" onClick={()=>setfilter("")} />
                     </button>
-                  </div>
+                  </div>}
                   {filteredExpenses.map((expense, index) => (
                     <div
                       key={index}

@@ -1,0 +1,1 @@
+export const baseurl="https://fairshare-backend.vercel.app"

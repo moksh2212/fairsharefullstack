@@ -12,6 +12,7 @@ import {
 import { useSelector } from "react-redux";
 import { ImStatsDots } from "react-icons/im";
 import { GiCrossMark } from "react-icons/gi";
+import { baseurl } from "../../util";
 
 const Statistics = ({ over }) => {
   const currentgroup = useSelector((state) => state.CurrentGroupReducer.ob) || {};
@@ -22,7 +23,7 @@ const Statistics = ({ over }) => {
     const fetchGroupExpense = async () => {
       try {
         const response = await fetch(
-          `http://localhost:6000/expenses/MonthlyExpenses/${currentgroup.GroupId}`,
+          `${baseurl}/expenses/MonthlyExpenses/${currentgroup.GroupId}`,
           {
             method: "GET",
           }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { PieChart, Pie, Tooltip, ResponsiveContainer, Legend, Cell } from 'recharts';
 import { useSelector } from 'react-redux';
+import { baseurl } from "../../util";
 
 const PieChartComponent = () => {
   const [data, setData] = useState([]);
@@ -9,7 +10,7 @@ const PieChartComponent = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/expenses/PieExpenses/${currentgroup.GroupId}`, {
+        const response = await fetch(`${baseurl}/expenses/PieExpenses/${currentgroup.GroupId}`, {
           method: "GET",
         });
 

@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { FaSadCry } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useUser } from "@clerk/clerk-react";
 import Settleup from "./Settleup";
 import { SettleupExtension } from "./SettleupExtension";
-
+import { baseurl } from "../../util";
+import { changeLoader } from "../redux/LoadingReducer";
 export const GroupSummary = () => {
   const currentgroup = useSelector((state) => state.CurrentGroupReducer.ob) || {};
   const expense = useSelector((state) => state.ExpenseReducer.Expenses) || [];
@@ -15,9 +16,10 @@ export const GroupSummary = () => {
   const [modalExtension, setModalExtension] = useState(false);
   const [settleUpData, setSettleUpData] = useState({});
   const [filteredExpense, setFilteredExpense] = useState([]);
-
+const dispatch=useDispatch();
   useEffect(() => {
     const fetchGroupSummary = async () => {
+
       const filteredExpenses = expense.filter((exp) => exp.shown);
       setFilteredExpense(filteredExpenses);
       if (!currentgroup.GroupId || !username || filteredExpenses.length === 0) return;
@@ -27,7 +29,7 @@ export const GroupSummary = () => {
       };
       try {
         const response = await fetch(
-          "http://localhost:8000/group/getgroupsBalance",
+          `${baseurl}/group/getgroupsBalance`,
           {
             method: "POST",
             headers: {
@@ -36,13 +38,13 @@ export const GroupSummary = () => {
             body: JSON.stringify(data),
           }
         );
-
         const res = await response.json();
         if (res && res.data) {
           setSummary(res.data);
         } else {
           setSummary({});
         }
+        
         console.log("summary", res.data);
       } catch (e) {
         console.log(e);

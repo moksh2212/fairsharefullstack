@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useUser } from "@clerk/clerk-react";
+import { baseurl } from "../../util";
+import ReactLoading from "react-loading";
 
 export const RecentActivities = () => {
   const currentgroup = useSelector((state) => state.CurrentGroupReducer.ob) || {};
@@ -22,7 +24,7 @@ export const RecentActivities = () => {
       }
 
       try {
-        const response = await fetch(`http://localhost:8000/group/RecentActivities/${currentgroup.GroupId}`, {
+        const response = await fetch(`${baseurl}/group/RecentActivities/${currentgroup.GroupId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -68,7 +70,9 @@ export const RecentActivities = () => {
       <hr className="border-t border-orange-400 my-4 mx-0" />
       <div className="h-56 overflow-y-auto">
         {loading ? (
-          <div>Loading...</div>
+          <div className=" flex items-center justify-center">
+          <ReactLoading type="spin" color="#fff" />
+          </div>
         ) : error ? (
           <div className="text-sxl text-gray-500">Nothing Recent</div>
         ) : recentActivities.length > 0 ? (

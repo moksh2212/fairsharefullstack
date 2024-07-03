@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import { FaCopy } from "react-icons/fa";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-
+import { baseurl } from "../../util";
 
 import { useMemo } from "react";
 export const CreateGroupCard = ({ onSubmit, setshowcard }) => {

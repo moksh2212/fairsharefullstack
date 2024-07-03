@@ -10,7 +10,9 @@ import { ToastContainer, toast, Bounce } from "react-toastify";
 import { GroupSummary } from "../Components/GroupSummary";
 import { RecentActivities } from "../Components/RecentActivities";
 import "react-toastify/dist/ReactToastify.css";
-
+import ReactLoading from "react-loading";
+import { changeLoader } from "../redux/LoadingReducer";
+import { baseurl } from "../../util";
 export const Combined = () => {
   const dispatch = useDispatch();
   const socket = useMemo(
@@ -20,6 +22,9 @@ export const Combined = () => {
       }),
     []
   );
+ 
+  const Loader = useSelector((state) => state.LoadingReducer.loader);
+ console.log(Loader)
   const currentgroup = useSelector((state) => state.CurrentGroupReducer.ob);
   const NewExpense = useSelector(
     (state) => state.NewExpenseReducer.NewExpenses
@@ -120,7 +125,7 @@ export const Combined = () => {
       };
       console.log(data);
       try {
-        const response = await fetch("http://localhost:8000/user/createUser", {
+        const response = await fetch(`${baseurl}user/createUser`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -134,8 +139,9 @@ export const Combined = () => {
         console.log(e);
       }
       try {
+        dispatch(changeLoader(true))
         const response = await fetch(
-          `http://localhost:8000/group/getgroups/${user.username}`,
+          `${baseurl}/group/getgroups/${user.username}`,
           {
             method: "GET",
             headers: {
@@ -146,6 +152,7 @@ export const Combined = () => {
         if (response.ok) {
           const groups = await response.json();
           dispatch(addGroup(groups));
+          dispatch(changeLoader(false))
           console.log("Group data fetched successfully");
         } else {
           console.error("Failed to fetch group data");
@@ -175,37 +182,41 @@ export const Combined = () => {
         theme="dark"
         transition={Bounce}
       />
-      <div className="absolute top-4 right-4">
-        <UserButton />
-      </div>
+      {Loader===true?  <div className="flex justify-center items-center h-screen">
+    <ReactLoading type="cylon" color="#fff" />
+  </div>:
+      (<div> <div className="absolute top-4 right-4">
+      <UserButton />
+    </div>
 
-      {showExpenseCard && (
-        <AddExpenseCard setShowExpenseCard={setShowExpenseCard} />
-      )}
+    {showExpenseCard && (
+      <AddExpenseCard setShowExpenseCard={setShowExpenseCard} />
+    )}
 
-      <div className="flex flex-col items-center">
-        <img
-          src="logo.png"
-          alt="Logo"
-          className="mb-8 mt-1"
-          style={{ height: "6rem" }}
-        />
-      </div>
+    <div className="flex flex-col items-center">
+      <img
+        src="logo.png"
+        alt="Logo"
+        className="mb-8 mt-1"
+        style={{ height: "6rem" }}
+      />
+    </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 h-full">
-        <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-0 p-0">
-          <div className="w-full">
-            <Table />
-          </div>
-          <div className="w-full">
-            <ExpenseTable setShowExpenseCard={setShowExpenseCard} />
-          </div>
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 h-full">
+      <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-0 p-0">
+        <div className="w-full">
+          <Table />
         </div>
-        <div className="lg:col-span-1 flex flex-col gap-5 ml-4">
-          <RecentActivities />
-          <GroupSummary />
+        <div className="w-full">
+          <ExpenseTable setShowExpenseCard={setShowExpenseCard} />
         </div>
       </div>
+      <div className="lg:col-span-1 flex flex-col gap-5 ml-4">
+        <RecentActivities />
+        <GroupSummary />
+      </div>
+    </div></div>)}
+     
     </div>
   );
 };

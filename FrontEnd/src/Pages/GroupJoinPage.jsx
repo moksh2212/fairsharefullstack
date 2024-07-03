@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useUser } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 import { AiFillCloseCircle } from "react-icons/ai";
-
+import { baseurl } from "../../util";
 export const GroupJoinPage = () => {
   const { user } = useUser();
   const [error, seterror] = useState()
@@ -26,7 +26,7 @@ export const GroupJoinPage = () => {
     const joingrpmethod = async () => {
 
       try {
-        const response = await fetch("http://localhost:8000/group/addMember", {
+        const response = await fetch(`${baseurl}/group/addMember`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

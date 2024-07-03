@@ -12,6 +12,7 @@ import WarningComponent from "./WarningComponent";
 import { FaLink } from "react-icons/fa6";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import { IoStatsChartSharp } from "react-icons/io5";
+import { baseurl } from "../../util";
 
 import Statistics from "./Statistics";
 export const Table = () => {
@@ -54,7 +55,7 @@ export const Table = () => {
     };
     console.log(groupWithColor);
     try {
-      const response = await fetch("http://localhost:8000/group/createGroup", {
+      const response = await fetch(`${baseurl}/group/createGroup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -86,7 +87,7 @@ export const Table = () => {
   const handleDelete = async () => {
     try {
       let id = grpid;
-      const response = await fetch(`http://localhost:8000/group/delete/${id}`, {
+      const response = await fetch(`${baseurl}/group/delete/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

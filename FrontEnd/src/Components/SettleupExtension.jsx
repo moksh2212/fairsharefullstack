@@ -6,16 +6,25 @@ import { useUser } from "@clerk/clerk-react";
 import { useSelector} from "react-redux";
 import { useDispatch } from "react-redux";
 import { addExpense } from "../redux/ExpensesReducers";
+import { baseurl } from "../../util";
+
 export const SettleupExtension = ({ back, handlemodal, data }) => {
   const groupMember = useSelector((state) => state.CurrentGroupReducer.ob);
   const Expenses = useSelector((state) => state.ExpenseReducer.Expenses);
   const user = useUser().user;
-  const [amount, setAmount] = useState(Object.values(data)[0]);
+  const [amount, setAmount] = useState(() => Math.abs(parseInt(Object.values(data)[0], 10)) || '');
+
 const dispatch=useDispatch();
 
-  const handleAmount = (e) => {
-    setAmount(e.target.value);
-  };
+const handleAmount = (event) => {
+  let value = event.target.value;
+  value = Math.abs(parseInt(value, 10));
+  if (!isNaN(value)) {
+    setAmount(value);
+  } else {
+    setAmount('');
+  }
+};
 
   const handleRecord = async () => {
     let paidby = Object.values(data)[0] > 0 ? Object.keys(data)[0] : user.username;
@@ -37,7 +46,7 @@ const dispatch=useDispatch();
     const formData = new FormData();
     formData.append("expense", JSON.stringify(expense));
     try {
-      const response = await fetch(`http://localhost:8000/expenses/addexpense`, {
+      const response = await fetch(`${baseurl}/expenses/addexpense`, {
         method: "POST",
         body: formData,
       });
@@ -93,18 +102,18 @@ const dispatch=useDispatch();
               </div>
               <div className="flex items-center justify-center text-white rounded-lg font-bold p-4">
                 {Object.values(data)[0] < 0 ? (
-                  <div className="flex items-center justify-center gap-2">
-                    You are making a payment of
-                    <input
-                      type="text"
-                      className="bg-gray-600 text-white w-20 text-center border rounded-md border-orange-600 hover:bg-gray-700 focus:outline-none"
-                      value={amount}
-                      onChange={handleAmount}
-                    />
-                    to {Object.keys(data)}
-                  </div>
+               <div className="flex items-center justify-center gap-2 text-xs">
+               <div className="flex items-center justify-center">You are making a payment of</div> 
+               <input
+                 type="text"
+                 className="bg-gray-600 text-white w-20 text-center border rounded-md border-orange-600 hover:bg-gray-700 focus:outline-none"
+                 value={amount}
+                 onChange={handleAmount}
+               />
+               <div className="flex items-center justify-center">to {Object.keys(data)}</div>
+             </div>
                 ) : (
-                  <div className="flex items-center justify-center gap-2">
+                  <div className="flex items-center justify-center gap-2 text-xs" >
                     {Object.keys(data)} paid
                     <span className="text-green-500">
                       <input
