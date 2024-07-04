@@ -59,8 +59,8 @@ const Statistics = ({ over }) => {
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                 <ImStatsDots />
               </h3>
-
-              <GiCrossMark className="text-white" onClick={() => over(false)} />
+<button>
+              <GiCrossMark className="text-white" onClick={() => over(false)} /></button>
             </div>
             <div className="p-4 md:p-5 dark:bg-gray-800">
               <ul className="flex flex-wrap -mb-px">

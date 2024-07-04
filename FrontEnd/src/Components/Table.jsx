@@ -221,6 +221,7 @@ export const Table = () => {
                         </div>
                       </div>
                     </div>
+                    <div className="flex items-center justify-center gap-6">
                     <button
                       type="button"
                       className="text-red-500 hover:text-red-700"
@@ -244,6 +245,7 @@ export const Table = () => {
                     >
                       <FaLink className="text-white" />
                     </button>
+                    </div>
                   </div>
                 ))}
               </div>

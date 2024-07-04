@@ -12,18 +12,30 @@ export const SettleupExtension = ({ back, handlemodal, data }) => {
   const groupMember = useSelector((state) => state.CurrentGroupReducer.ob);
   const Expenses = useSelector((state) => state.ExpenseReducer.Expenses);
   const user = useUser().user;
-  const [amount, setAmount] = useState(() => Math.abs(parseInt(Object.values(data)[0], 10)) || '');
-
+  const [amount, setAmount] = useState(() => {
+    const initialValue = Object.values(data)[0];
+    if (typeof initialValue === 'number' && !isNaN(initialValue)) {
+      return Math.abs(parseFloat(initialValue).toFixed(2)); // Ensure toFixed(2) for 2 decimal places
+    }
+    return '';
+  });
+  
 const dispatch=useDispatch();
 
 const handleAmount = (event) => {
   let value = event.target.value;
-  value = Math.abs(parseInt(value, 10));
-  if (!isNaN(value)) {
-    setAmount(value);
-  } else {
-    setAmount('');
+
+  // Remove non-numeric and non-decimal characters except leading minus sign
+  value = value.replace(/[^0-9.]/g, '');
+
+  // Ensure there's only one decimal point
+  const parts = value.split('.');
+  if (parts.length > 2) {
+    value = parts[0] + '.' + parts.slice(1).join('');
   }
+
+  // Update state with the cleaned value
+  setAmount(value);
 };
 
   const handleRecord = async () => {

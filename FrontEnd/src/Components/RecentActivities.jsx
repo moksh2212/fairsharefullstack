@@ -84,7 +84,7 @@ export const RecentActivities = () => {
             </div>
           ))
         ) : (
-          <div>No recent activities available.</div>
+          <div className="text-orange-400">No recent activities available.</div>
         )}
       </div>
       <hr className="border-t border-orange-400 my-4 ml-10 mr-10 mt-4" />
