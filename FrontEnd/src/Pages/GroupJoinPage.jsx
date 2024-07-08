@@ -12,7 +12,7 @@ export const GroupJoinPage = () => {
 
   const { groupid } = useParams();
   const data = {
-    groupid,
+    groupid, 
     user: {
       userid: user.id,
       username: user.username,

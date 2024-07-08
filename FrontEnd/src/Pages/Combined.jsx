@@ -17,7 +17,7 @@ export const Combined = () => {
   const dispatch = useDispatch();
   const socket = useMemo(
     () =>
-      io("localhost:8000", {
+      io("fairshare-backend.vercel.app", {
         withCredentials: true,
       }),
     []

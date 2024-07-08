@@ -12,8 +12,11 @@ import { useMemo } from "react";
 export const CreateGroupCard = ({ onSubmit, setshowcard }) => {
   const { user } = useUser();
 
+  const fullUrl = window.location.href;
+  const baseUrl = fullUrl.replace('/combined', '');
   const uniqueId = useMemo(() => uuidv4(), []);
-  const link = `http://localhost:5173/group-join/${uniqueId}`;
+  const link = `${baseUrl}/group-join/${uniqueId}`;
+  // const link = `http://localhost:5173/group-join/${uniqueId}`;
 
 
   const [members, setMembers] = useState([user.username]);

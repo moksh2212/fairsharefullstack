@@ -8,7 +8,7 @@ import store from './redux/store';
 import { Provider } from 'react-redux';
 
 // Import your publishable key
-const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+const PUBLISHABLE_KEY = "pk_test_ZnVuLXByaW1hdGUtMzcuY2xlcmsuYWNjb3VudHMuZGV2JA";
 if (!PUBLISHABLE_KEY) {
   throw new Error('Missing Publishable Key');
 }
